@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bedtime - National Geographic Kids</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Comic+Neue:wght@700&display=swap');
+
+        :root {
+            --primary: #6366f1;
+            --primary-light: #e0e7ff;
+            --primary-dark: #3730a3;
+            --secondary: #8b5cf6;
+            --bg-color: #f5f3ff;
+            --text-main: #2e1065;
+            --card-bg: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; padding: 20px; text-align: center; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); z-index: 10;
+        }
+        header h1 { font-family: 'Comic Neue', cursive; font-size: 1.8rem; letter-spacing: 1px; }
+        header p { font-size: 1rem; opacity: 0.9; margin-top: 5px; font-weight: 600; }
+
+        main { flex: 1; overflow-y: auto; padding: 20px 15px; padding-bottom: 100px; scroll-behavior: smooth; }
+        
+        /* --- SECTIONS --- */
+        .section { display: none; animation: slideIn 0.4s ease-out forwards; }
+        .section.active { display: block; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- CARDS --- */
+        .card {
+            background: var(--card-bg); border-radius: 20px; padding: 25px; margin-bottom: 20px;
+            box-shadow: 0 8px 15px -3px rgba(0,0,0,0.08); border: 2px solid transparent; transition: all 0.3s;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 12px 20px -5px rgba(0,0,0,0.12); border-color: var(--primary-light); }
+
+        /* --- READING STYLES --- */
+        .story-para { margin-bottom: 25px; display: flex; align-items: flex-start; gap: 15px; }
+        .para-text { font-size: 1.25rem; line-height: 1.6; color: #2e1065; font-weight: 700; }
+        
+        .speak-btn {
+            background: #f5f3ff; color: #6d28d9; border: 2px solid #ddd6fe;
+            border-radius: 50%; min-width: 48px; max-width: 48px; height: 48px; font-size: 1.4rem;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .speak-btn:hover { background: #ede9fe; transform: scale(1.1); }
+        .speak-btn:active { transform: scale(0.9); }
+
+        /* --- VOCAB GRID --- */
+        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; padding: 10px; }
+        
+        .flip-card { background-color: transparent; height: 200px; perspective: 1000px; cursor: pointer; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        
+        .flip-front, .flip-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 3px solid #ddd6fe;
+        }
+        .flip-front { background: white; }
+        .flip-back { background: #f5f3ff; color: #4c1d95; transform: rotateY(180deg); border-color: #c4b5fd; }
+        
+        .word-icon { font-size: 4rem; margin-bottom: 10px; }
+        .word-en { font-size: 1.3rem; font-weight: 800; color: var(--primary-dark); }
+        .word-ipa { font-size: 0.9rem; color: #5b21b6; margin-top: 5px; font-family: monospace; background: #ede9fe; padding: 2px 8px; border-radius: 6px; }
+        .word-vi { font-size: 1.2rem; font-weight: 700; }
+
+        .card-audio-btn {
+            position: absolute; bottom: 10px; right: 10px; background: white; border: 1px solid #ddd6fe;
+            border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); font-size: 1rem;
+        }
+
+        /* --- BOTTOM NAV --- */
+        nav {
+            position: fixed; bottom: 0; width: 100%; background: white; border-top: 1px solid #ddd6fe;
+            display: flex; justify-content: space-around; padding: 10px 10px 25px 10px; box-shadow: 0 -4px 15px rgba(0,0,0,0.06);
+            z-index: 100;
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #a1a1aa; font-size: 0.9rem; font-weight: 800; gap: 5px; cursor: pointer; transition: all 0.3s; width: 45%; }
+        .nav-item.active { color: var(--primary-dark); }
+        .nav-icon { font-size: 1.6rem; padding: 10px 25px; border-radius: 15px; transition: all 0.3s; }
+        .nav-item.active .nav-icon { background: var(--primary-light); transform: translateY(-5px); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 400px) {
+            .vocab-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .flip-card { height: 180px; }
+            .word-icon { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Bedtime</h1>
+        <p>National Geographic Kids 🌙</p>
+    </header>
+
+    <main>
+        <!-- READ TAB -->
+        <div id="tab-read" class="section active">
+            <div class="card">
+                <div class="story-para">
+                    <button class="speak-btn" onclick="speak('The sun goes down, and the moon comes up. It\'s time for bedtime!')">🔊</button>
+                    <p class="para-text">The sun goes down, and the moon comes up. It's time for <span style="color:#6366f1">bedtime</span>! 🌙</p>
+                </div>
+                
+                <div class="story-para">
+                    <button class="speak-btn" onclick="speak('An orangutan napps in a cozy nest high up in the trees.')">🔊</button>
+                    <p class="para-text">An <span style="color:#8b5cf6">orangutan</span> napps in a cozy nest high up in the trees. 🌳</p>
+                </div>
+
+                <div class="story-para">
+                    <button class="speak-btn" onclick="speak('A lion cuddles with its family for a long snooze in the grass.')">🔊</button>
+                    <p class="para-text">A <span style="color:#f59e0b">lion</span> cuddles with its family for a long snooze in the grass. 🦁</p>
+                </div>
+
+                <div class="story-para">
+                    <button class="speak-btn" onclick="speak('A sea otter wraps itself in seaweed so it doesn\'t float away.')">🔊</button>
+                    <p class="para-text">A sea <span style="color:#0ea5e9">otter</span> wraps itself in seaweed so it doesn't float away. 🦦</p>
+                </div>
+
+                <div class="story-para">
+                    <button class="speak-btn" onclick="speak('Splash! It\'s time for a warm bath with lots of bubbles.')">🔊</button>
+                    <p class="para-text">Splash! It's time for a warm <span style="color:#22d3ee">bath</span> with lots of bubbles. 🛁</p>
+                </div>
+
+                <div class="story-para">
+                    <button class="speak-btn" onclick="speak('Put on your soft pajamas. They feel so snug and warm!')">🔊</button>
+                    <p class="para-text">Put on your soft <span style="color:#ec4899">pajamas</span>. They feel so snug and warm! 👕</p>
+                </div>
+
+                <div class="story-para">
+                    <button class="speak-btn" onclick="speak('Brush, brush, brush your teeth to keep them white and clean.')">🔊</button>
+                    <p class="para-text">Brush, brush, brush your <span style="color:#4b5563">teeth</span> to keep them white and clean. 🪥</p>
+                </div>
+
+                <div class="story-para">
+                    <button class="speak-btn" onclick="speak('Settle in and listen to a wonderful bedtime story.')">🔊</button>
+                    <p class="para-text">Settle in and listen to a wonderful <span style="color:#10b981">bedtime story</span>. 📖</p>
+                </div>
+
+                <div class="story-para">
+                    <button class="speak-btn" onclick="speak('Give a big hug and a goodnight kiss to your mommy and daddy.')">🔊</button>
+                    <p class="para-text">Give a big hug and a goodnight <span style="color:#ef4444">kiss</span> to your mommy and daddy. 💋</p>
+                </div>
+
+                <div class="story-para">
+                    <button class="speak-btn" onclick="speak('Turn off the light. The room is quiet and dark.')">🔊</button>
+                    <p class="para-text">Turn off the <span style="color:#eab308">light</span>. The room is quiet and dark. 💡</p>
+                </div>
+
+                <div class="story-para">
+                    <button class="speak-btn" onclick="speak('Close your eyes and have sweet dreams. Goodnight!')">🔊</button>
+                    <p class="para-text">Close your eyes and have sweet <span style="color:#a855f7">dreams</span>. Goodnight! ✨</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- VOCAB TAB -->
+        <div id="tab-vocab" class="section">
+            <div class="card" style="background:#f5f3ff; border: 2px solid #ddd6fe; padding: 15px; text-align: center; margin-bottom: 25px;">
+                <p style="font-weight: 800; color: #4c1d95;">💡 Bấm vào thẻ để xem nghĩa. Bấm loa để nghe!</p>
+            </div>
+            <div class="vocab-grid" id="vocab-container">
+                <!-- Cards injected via JS -->
+            </div>
+        </div>
+    </main>
+
+    <nav>
+        <div class="nav-item active" onclick="switchTab('read', this)">
+            <div class="nav-icon">📖</div>
+            <span>Read</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('vocab', this)">
+            <div class="nav-icon">🔤</div>
+            <span>Vocab</span>
+        </div>
+    </nav>
+
+    <script>
+        const vocabData = [
+            { w: "bedtime", ipa: "/ˈbed.taɪm/", m: "giờ đi ngủ", icon: "🛌" },
+            { w: "moon", ipa: "/muːn/", m: "mặt trăng", icon: "🌙" },
+            { w: "nest", ipa: "/nest/", m: "tổ", icon: "🪺" },
+            { w: "snooze", ipa: "/snuːz/", m: "giấc ngủ ngắn", icon: "😴" },
+            { w: "cuddle", ipa: "/ˈkʌd.əl/", m: "ôm ấp", icon: "🤗" },
+            { w: "bath", ipa: "/bæθ/", m: "tắm", icon: "🛁" },
+            { w: "pajamas", ipa: "/pəˈdʒɑː.məz/", m: "bộ đồ ngủ", icon: "👕" },
+            { w: "brush", ipa: "/brʌʃ/", m: "chải/đánh răng", icon: "🪥" },
+            { w: "teeth", ipa: "/tiːθ/", m: "răng", icon: "🦷" },
+            { w: "story", ipa: "/ˈstɔː.ri/", m: "câu chuyện", icon: "📖" },
+            { w: "kiss", ipa: "/kɪs/", m: "nụ hôn", icon: "💋" },
+            { w: "light", ipa: "/laɪt/", m: "ánh sáng", icon: "💡" },
+            { w: "sleep", ipa: "/sliːp/", m: "ngủ", icon: "💤" },
+            { w: "dream", ipa: "/driːm/", m: "giấc mơ", icon: "✨" },
+            { w: "night", ipa: "/naɪt/", m: "ban đêm", icon: "🌃" }
+        ];
+
+        // --- SPEECH ---
+        let voices = [];
+        const updateVoices = () => { voices = window.speechSynthesis.getVoices(); };
+        window.speechSynthesis.onvoiceschanged = updateVoices;
+        updateVoices();
+
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.85;
+            const usVoice = voices.find(v => v.lang === 'en-US' && v.name.includes('Samantha')) || voices.find(v => v.lang === 'en-US');
+            if (usVoice) utterance.voice = usVoice;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // --- TABS ---
+        function switchTab(id, el) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('tab-' + id).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            document.querySelector('main').scrollTop = 0;
+        }
+
+        // --- RENDER VOCAB ---
+        const container = document.getElementById('vocab-container');
+        vocabData.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'flip-card';
+            card.innerHTML = `
+                <div class="flip-card-inner">
+                    <div class="flip-front">
+                        <div class="word-icon">${item.icon}</div>
+                        <div class="word-en">${item.w}</div>
+                        <div class="word-ipa">${item.ipa}</div>
+                        <button class="card-audio-btn" onclick="event.stopPropagation(); speak('${item.w}')">🔊</button>
+                    </div>
+                    <div class="flip-back">
+                        <div class="word-vi">${item.m}</div>
+                        <div style="margin-top:10px; opacity:0.6; font-size:0.8rem;">Click to flip back</div>
+                    </div>
+                </div>
+            `;
+            card.onclick = () => card.classList.toggle('flipped');
+            container.appendChild(card);
+        });
+    </script>
+</body>
+</html>

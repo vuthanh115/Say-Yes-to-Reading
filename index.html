@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Say Yes to Reading - Collection</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Comic+Neue:wght@700&display=swap');
+
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #e0e7ff;
+            --primary-dark: #312e81;
+            --bg-gradient: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+            --text-main: #1e1b4b;
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; }
+        
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 15px;
+            overflow-x: hidden;
+        }
+
+        /* --- BACKGROUND SHAPES --- */
+        .shape { position: fixed; z-index: -1; filter: blur(60px); opacity: 0.5; border-radius: 50%; animation: float 10s infinite alternate; }
+        .shape-1 { width: 300px; height: 300px; background: #818cf8; top: -100px; left: -100px; }
+        .shape-2 { width: 400px; height: 400px; background: #c084fc; bottom: -150px; right: -150px; animation-delay: -5s; }
+        @keyframes float { from { transform: translate(0,0); } to { transform: translate(30px, 30px); } }
+
+        /* --- HERO --- */
+        header { text-align: center; margin-bottom: 50px; }
+        header h1 {
+            font-family: 'Comic Neue', cursive;
+            font-size: 3.5rem;
+            background: linear-gradient(to right, #4f46e5, #9333ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        header p { font-size: 1.25rem; font-weight: 700; color: #4338ca; }
+
+        /* --- GRID --- */
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* --- CARDS --- */
+        .book-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.8);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+        }
+        .book-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px -10px rgba(79, 70, 229, 0.2);
+            border-color: #c7d2fe;
+        }
+
+        .card-icon {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        .book-card:hover .card-icon { transform: rotate(5deg) scale(1.1); }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+            line-height: 1.2;
+        }
+
+        .btn-open {
+            background: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 1rem;
+            display: inline-block;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+            margin-top: auto;
+        }
+        .book-card:hover .btn-open { background: #4338ca; padding: 12px 35px; }
+
+        /* --- FOOTER --- */
+        footer { margin-top: 80px; text-align: center; color: #6366f1; font-weight: 700; opacity: 0.8; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 600px) {
+            header h1 { font-size: 2.5rem; }
+            .book-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+
+    <header>
+        <h1>Say Yes to Reading</h1>
+        <p>Interactive Book Collection for Kids 📚✨</p>
+    </header>
+
+    <main class="book-grid">
+        <!-- ANIMALS ON THE GO -->
+        <a href="Animals on the Go.html" class="book-card">
+            <div class="card-icon">🐆</div>
+            <div class="card-title">Animals on the Go</div>
+            <div class="btn-open">Open Book</div>
+        </a>
+
+        <!-- LET'S GO! -->
+        <a href="Let's Go!.html" class="book-card">
+            <div class="card-icon">🚀</div>
+            <div class="card-title">Let's Go!</div>
+            <div class="btn-open">Open Book</div>
+        </a>
+
+        <!-- OCEAN -->
+        <a href="Ocean.html" class="book-card">
+            <div class="card-icon">🌊</div>
+            <div class="card-title">Ocean</div>
+            <div class="btn-open">Open Book</div>
+        </a>
+
+        <!-- TRUCKS! -->
+        <a href="Trucks!.html" class="book-card">
+            <div class="card-icon">🚛</div>
+            <div class="card-title">Trucks!</div>
+            <div class="btn-open">Open Book</div>
+        </a>
+
+        <!-- BEDTIME -->
+        <a href="Bedtime.html" class="book-card">
+            <div class="card-icon">🌙</div>
+            <div class="card-title">Bedtime</div>
+            <div class="btn-open">Open Book</div>
+        </a>
+
+        <!-- FARM ANIMALS -->
+        <a href="Farm Animals.html" class="book-card">
+            <div class="card-icon">🐄</div>
+            <div class="card-title">Farm Animals</div>
+            <div class="btn-open">Open Book</div>
+        </a>
+    </main>
+
+    <footer>
+        <p>Made with ❤️ for learning English</p>
+    </footer>
+
+</body>
+</html>
