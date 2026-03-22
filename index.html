@@ -29,151 +29,105 @@
             overflow-x: hidden;
         }
 
-        /* --- BACKGROUND SHAPES --- */
-        .shape { position: fixed; z-index: -1; filter: blur(60px); opacity: 0.5; border-radius: 50%; animation: float 10s infinite alternate; }
-        .shape-1 { width: 300px; height: 300px; background: #818cf8; top: -100px; left: -100px; }
-        .shape-2 { width: 400px; height: 400px; background: #c084fc; bottom: -150px; right: -150px; animation-delay: -5s; }
-        @keyframes float { from { transform: translate(0,0); } to { transform: translate(30px, 30px); } }
+        header { text-align: center; margin-bottom: 40px; z-index: 10; }
+        header h1 { font-family: 'Comic Neue', cursive; font-size: 2.5rem; color: var(--primary-dark); margin-bottom: 10px; }
+        header p { font-size: 1.1rem; font-weight: 700; opacity: 0.8; }
 
-        /* --- HERO --- */
-        header { text-align: center; margin-bottom: 50px; }
-        header h1 {
-            font-family: 'Comic Neue', cursive;
-            font-size: 3.5rem;
-            background: linear-gradient(to right, #4f46e5, #9333ea);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-        header p { font-size: 1.25rem; font-weight: 700; color: #4338ca; }
-
-        /* --- GRID --- */
         .book-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
+            gap: 25px;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1000px;
+            z-index: 10;
         }
 
-        /* --- CARDS --- */
         .book-card {
             background: var(--card-bg);
-            border-radius: 24px;
-            padding: 30px;
+            border-radius: 25px;
+            padding: 30px 20px;
             text-align: center;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.8);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.1);
+            border: 2px solid white;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-decoration: none;
-            color: inherit;
         }
+
         .book-card:hover {
             transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px -10px rgba(79, 70, 229, 0.2);
-            border-color: #c7d2fe;
+            box-shadow: 0 20px 35px rgba(79, 70, 229, 0.2);
+            border-color: var(--primary-light);
         }
 
-        .card-icon {
-            font-size: 4.5rem;
-            margin-bottom: 20px;
-            transition: transform 0.3s;
-        }
-        .book-card:hover .card-icon { transform: rotate(5deg) scale(1.1); }
-
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            color: var(--primary-dark);
-            line-height: 1.2;
-        }
-
+        .card-icon { font-size: 4.5rem; margin-bottom: 20px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
+        .card-title { font-size: 1.4rem; font-weight: 800; color: var(--primary-dark); margin-bottom: 15px; min-height: 3.5rem; display: flex; align-items: center; }
+        
         .btn-open {
             background: var(--primary);
             color: white;
-            padding: 12px 25px;
-            border-radius: 30px;
+            padding: 10px 25px;
+            border-radius: 15px;
             font-weight: 800;
             font-size: 1rem;
-            display: inline-block;
-            transition: all 0.3s;
-            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
-            margin-top: auto;
+            transition: 0.2s;
+            box-shadow: 0 4px 0 var(--primary-dark);
         }
-        .book-card:hover .btn-open { background: #4338ca; padding: 12px 35px; }
+        .book-card:hover .btn-open { background: var(--primary-dark); }
 
-        /* --- FOOTER --- */
-        footer { margin-top: 80px; text-align: center; color: #6366f1; font-weight: 700; opacity: 0.8; }
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 600px) {
-            header h1 { font-size: 2.5rem; }
-            .book-grid { grid-template-columns: 1fr; }
-        }
+        /* --- DECORATIONS --- */
+        .shape { position: fixed; z-index: 1; opacity: 0.5; pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
-
     <header>
-        <h1>Say Yes to Reading</h1>
-        <p>Interactive Book Collection for Kids 📚✨</p>
+        <h1>My Reading Library 📚</h1>
+        <p>Chọn một cuốn sách để bắt đầu khám phá!</p>
     </header>
 
-    <main class="book-grid">
-        <!-- ANIMALS ON THE GO -->
-        <a href="Animals on the Go.html" class="book-card">
+    <div class="book-grid">
+        
+        <a href="AnimalsOnTheGo.html" class="book-card">
             <div class="card-icon">🐆</div>
             <div class="card-title">Animals on the Go</div>
             <div class="btn-open">Open Book</div>
         </a>
 
-        <!-- LET'S GO! -->
-        <a href="Let's Go!.html" class="book-card">
+        <a href="LetsGo.html" class="book-card">
             <div class="card-icon">🚀</div>
             <div class="card-title">Let's Go!</div>
             <div class="btn-open">Open Book</div>
         </a>
 
-        <!-- OCEAN -->
-        <a href="Ocean.html" class="book-card">
+        <a href="OceanApp.html" class="book-card">
             <div class="card-icon">🌊</div>
-            <div class="card-title">Ocean</div>
+            <div class="card-title">Ocean Explorer</div>
             <div class="btn-open">Open Book</div>
         </a>
 
-        <!-- TRUCKS! -->
-        <a href="Trucks!.html" class="book-card">
+        <a href="TrucksApp.html" class="book-card">
             <div class="card-icon">🚛</div>
             <div class="card-title">Trucks!</div>
             <div class="btn-open">Open Book</div>
         </a>
 
-        <!-- BEDTIME -->
-        <a href="Bedtime.html" class="book-card">
+        <a href="BedtimeApp.html" class="book-card">
             <div class="card-icon">🌙</div>
-            <div class="card-title">Bedtime</div>
+            <div class="card-title">Bedtime Stories</div>
             <div class="btn-open">Open Book</div>
         </a>
 
-        <!-- FARM ANIMALS -->
-        <a href="Farm Animals.html" class="book-card">
+        <a href="FarmAnimals.html" class="book-card">
             <div class="card-icon">🐄</div>
             <div class="card-title">Farm Animals</div>
             <div class="btn-open">Open Book</div>
         </a>
-    </main>
 
-    <footer>
-        <p>Made with ❤️ for learning English</p>
-    </footer>
+    </div>
 
 </body>
 </html>

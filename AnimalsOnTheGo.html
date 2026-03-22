@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animals on the Go - National Geographic Kids</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Comic+Neue:wght@700&display=swap');
+
+        :root {
+            --primary: #22c55e; /* Safari Green */
+            --primary-light: #dcfce7;
+            --primary-dark: #15803d;
+            --secondary: #f59e0b; /* Sunset Yellow */
+            --accent: #0ea5e9; /* Sky Blue */
+            --bg-color: #f0fdf4; 
+            --text-main: #1e293b;
+            --card-bg: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; }
+        body { 
+            background: linear-gradient(135deg, #f0fdf4 0%, #ccfbf1 100%);
+            color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; 
+        }
+        
+        header {
+            background: var(--primary); color: white; padding: 15px; text-align: center;
+            border-bottom: 6px solid var(--primary-dark); box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 10;
+        }
+        header h1 { font-family: 'Comic Neue', cursive; font-size: 1.9rem; text-transform: uppercase; color: #fef08a; text-shadow: 1px 2px 0px var(--primary-dark);}
+        header p { font-size: 0.95rem; font-weight: 800; color: #dcfce7; }
+
+        main { flex: 1; overflow-y: auto; padding: 20px 15px 100px 15px; display: flex; flex-direction: column; align-items: center; }
+        
+        .section { display: none; width: 100%; max-width: 500px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .section.active { display: block; }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+        /* --- BUTTONS --- */
+        .btn {
+            background: var(--secondary); color: white; border: none; padding: 12px 20px;
+            border-radius: 15px; font-weight: 900; font-size: 1.1rem; cursor: pointer;
+            box-shadow: 0 5px 0 #b45309; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn:active { transform: translateY(5px); box-shadow: none; }
+        .btn-outline { background: white; color: var(--primary-dark); border: 3px solid var(--primary); box-shadow: 0 5px 0 var(--primary-dark); }
+
+        /* --- FLASHCARD (READ TAB) --- */
+        .flashcard {
+            background: var(--card-bg); border-radius: 20px; padding: 25px 20px; text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 6px solid var(--primary-light);
+            position: relative; min-height: 520px; display: flex; flex-direction: column; align-items: center;
+        }
+        
+        .fact-badge {
+            background: #fef3c7; color: #b45309; padding: 10px 15px; border-radius: 15px;
+            font-weight: 800; font-size: 0.95rem; border: 2px dashed #f59e0b; margin-bottom: 10px; font-style: italic; line-height: 1.3;
+        }
+
+        .animal-icon { font-size: 6rem; margin: 5px 0 10px 0; cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 8px 10px rgba(0,0,0,0.1)); }
+        .animal-icon:active { transform: scale(0.8) translateY(10px); }
+        
+        .action-word { font-size: 1.1rem; color: white; background: var(--accent); padding: 5px 15px; border-radius: 15px; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; box-shadow: 0 3px 0 #0284c7;}
+
+        .en-text { font-size: 1.2rem; font-weight: 900; color: var(--text-main); line-height: 1.4; margin-bottom: 10px; }
+        .vi-text { font-size: 1.05rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 20px; display: none; line-height: 1.4; border-top: 1px dashed #cbd5e1; padding-top: 10px; }
+        .vi-text.show { display: block; animation: fadeIn 0.3s; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- VOCAB GRID --- */
+        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
+        .flip-card { background-color: transparent; height: 180px; perspective: 1000px; cursor: pointer; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 15px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.05); border: 3px solid var(--primary-light); background: white;
+        }
+        .flip-back { background: var(--primary-light); color: var(--primary-dark); transform: rotateY(180deg); border-color: var(--primary); box-shadow: 0 6px 0 var(--primary-dark);}
+
+        /* --- GAME TAB --- */
+        .question-box { background: white; padding: 20px; border-radius: 15px; border: 4px solid var(--secondary); text-align: center; font-size: 1.25rem; font-weight: 900; margin-bottom: 20px; color: var(--text-main); box-shadow: 0 4px 0 #d97706; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .option-btn {
+            background: white; border: 3px solid #cbd5e1; border-radius: 15px; padding: 15px; font-size: 3rem;
+            cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 5px; box-shadow: 0 5px 0 #94a3b8;
+        }
+        .option-btn span { font-size: 1.1rem; font-weight: 900; color: var(--text-main); }
+        .option-btn:active { transform: translateY(5px); box-shadow: none; }
+        .option-btn.correct { background: #dcfce7; border-color: #22c55e; box-shadow: 0 5px 0 #16a34a; }
+        .option-btn.wrong { background: #fee2e2; border-color: #ef4444; box-shadow: 0 5px 0 #b91c1c; animation: shake 0.3s;}
+
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+        /* --- BOTTOM NAV --- */
+        nav {
+            position: fixed; bottom: 0; width: 100%; background: white; border-top: 4px solid var(--primary);
+            display: flex; justify-content: space-around; padding: 10px 10px 25px 10px; z-index: 100; box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 0.9rem; font-weight: 900; gap: 4px; cursor: pointer; transition: 0.3s; flex: 1; }
+        .nav-item.active { color: var(--primary); }
+        .nav-icon { font-size: 1.5rem; padding: 5px 20px; border-radius: 12px; transition: 0.3s; }
+        .nav-item.active .nav-icon { background: var(--primary-light); transform: translateY(-3px); }
+
+        /* LEAF EFFECT */
+        #leaf-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 200; overflow: hidden; display: none; }
+        .leaf { position: absolute; font-size: 2rem; animation: fall ease-in forwards; }
+        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg) translateX(0); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg) translateX(50px); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Animals On The Go 🌍</h1>
+        <p>National Geographic Kids</p>
+    </header>
+
+    <div id="leaf-container"></div>
+
+    <main>
+        <div id="tab-read" class="section active">
+            <div style="text-align: center; margin-bottom: 10px; font-weight: 900; color: var(--primary-dark);" id="page-indicator">Animal 1 / 11</div>
+            <div class="flashcard">
+                <div id="fact-badge" class="fact-badge"></div>
+                <div class="animal-icon" id="animal-icon" onclick="pokeAnimal()">🦩</div>
+                <div id="action-word" class="action-word">walks</div>
+                <div class="en-text" id="en-text">English</div>
+                <div class="vi-text" id="vi-text">Vietnamese</div>
+                
+                <div style="margin-top: auto; display: flex; gap: 10px; width: 100%;">
+                    <button class="btn btn-outline" style="flex: 1;" onclick="toggleVi()">E/V 🌐</button>
+                    <button class="btn" style="flex: 2;" onclick="readText()">🔊 Listen</button>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                <button class="btn btn-outline" onclick="prevCard()">⬅️ Back</button>
+                <button class="btn btn-outline" onclick="nextCard()">Next ➡️</button>
+            </div>
+        </div>
+
+        <div id="tab-vocab" class="section">
+            <div class="vocab-grid" id="vocab-container"></div>
+        </div>
+
+        <div id="tab-game" class="section">
+            <div class="question-box" id="quiz-question">How do they move?</div>
+            <div class="options-grid" id="quiz-options"></div>
+            <button class="btn" style="width: 100%; margin-top: 25px; background: var(--primary); color: white; box-shadow: 0 5px 0 var(--primary-dark);" onclick="initGame()">Restart Game 🔄</button>
+        </div>
+    </main>
+
+    <nav>
+        <div class="nav-item active" onclick="switchTab('read', this)">
+            <div class="nav-icon">📖</div><span>Read</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('vocab', this)">
+            <div class="nav-icon">🐾</div><span>Vocab</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('game', this)">
+            <div class="nav-icon">🎮</div><span>Game</span>
+        </div>
+    </nav>
+
+    <script>
+        // --- FULL RESTORED DATA ---
+        const animalData = [
+            { 
+                id: "ostrich", w: "Ostrich", vi: "Đà điểu", icon: "🦩", action: "Walks", 
+                en: "An ostrich walks on two long legs.", 
+                vi_sen: "Một con đà điểu đi bộ trên hai cái chân dài.", 
+                fact: "I am the original big bird!" 
+            },
+            { 
+                id: "snake", w: "Snake", vi: "Con rắn", icon: "🐍", action: "Slithers", 
+                en: "A snake slithers across the rocks.", 
+                vi_sen: "Con rắn trườn qua những tảng đá.", 
+                fact: "Snakes wiggle back and forth to move. Can you wiggle like a snake?" 
+            },
+            { 
+                id: "ladybug", w: "Ladybug", vi: "Bọ rùa", icon: "🐞", action: "Crawls", 
+                en: "Ladybugs crawl up, down, and over flowers.", 
+                vi_sen: "Bọ rùa bò lên, xuống và băng qua những bông hoa.", 
+                fact: "I can fly, too!" 
+            },
+            { 
+                id: "kangaroo", w: "Kangaroo", vi: "Chuột túi", icon: "🦘", action: "Hops", 
+                en: "A kangaroo hop, hop, hops across the field.", 
+                vi_sen: "Chuột túi nhảy qua cánh đồng.", 
+                fact: "Kangaroos always hop with both feet. Can you hop like a kangaroo?" 
+            },
+            { 
+                id: "penguin", w: "Penguins", vi: "Chim cánh cụt", icon: "🐧", action: "Slide", 
+                en: "Penguins slide across the snow on their bellies.", 
+                vi_sen: "Chim cánh cụt trượt trên tuyết bằng bụng.", 
+                fact: "Can I get a little push?" 
+            },
+            { 
+                id: "dolphin", w: "Dolphins", vi: "Cá heo", icon: "🐬", action: "Jump", 
+                en: "Dolphins jump and splash in the water. Dolphins use their tails to swim and jump.", 
+                vi_sen: "Cá heo nhảy và té nước tung tóe. Cá heo dùng đuôi để bơi và nhảy.", 
+                fact: "Touch each dolphin's tail." 
+            },
+            { 
+                id: "orangutan", w: "Orangutans", vi: "Đười ươi", icon: "🦧", action: "Swings", 
+                en: "An orangutan swings from branch to branch.", 
+                vi_sen: "Đười ươi đu từ cành này sang cành khác.", 
+                fact: "Just swinging by to say hi!" 
+            },
+            { 
+                id: "seaturtle", w: "Sea Turtle", vi: "Rùa biển", icon: "🐢", action: "Flaps", 
+                en: "A sea turtle flaps its flippers to swim.", 
+                vi_sen: "Rùa biển đập đôi vây chèo để bơi.", 
+                fact: "Flap your arms up and down to swim like a sea turtle." 
+            },
+            { 
+                id: "butterfly", w: "Butterfly", vi: "Con bướm", icon: "🦋", action: "Flutters", 
+                en: "A butterfly flutters its wings to fly.", 
+                vi_sen: "Bướm vỗ cánh để bay.", 
+                fact: "Hello, friend! The butterfly has spots on its wings. Do you see another animal with spots?" 
+            },
+            { 
+                id: "bear", w: "Black Bears", vi: "Gấu đen", icon: "🐻", action: "Climb", 
+                en: "Black bears climb up and down trees.", 
+                vi_sen: "Gấu đen trèo lên và trèo xuống cây.", 
+                fact: "Can you lend me a paw?" 
+            },
+            { 
+                id: "cheetah", w: "Cheetah", vi: "Báo săn", icon: "🐆", action: "Runs", 
+                en: "A cheetah runs on four fast legs.", 
+                vi_sen: "Báo săn chạy bằng bốn cái chân rất nhanh.", 
+                fact: "How do you like to move?" 
+            }
+        ];
+
+        const quizQuestions = [
+            { q: "Which animal slithers across rocks? 🪨", ans: "snake" },
+            { q: "Which animal hops with both feet? 🌾", ans: "kangaroo" },
+            { q: "Which animal slides on its belly? ❄️", ans: "penguin" },
+            { q: "Which animal swings from branch to branch? 🌳", ans: "orangutan" },
+            { q: "Which animal flaps its flippers to swim? 🌊", ans: "seaturtle" },
+            { q: "Which animal climbs up and down trees? 🌲", ans: "bear" }
+        ];
+
+        // --- SPEECH API ---
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'en-US'; u.rate = 0.85;
+            window.speechSynthesis.speak(u);
+        }
+
+        // --- TAB MANAGEMENT ---
+        function switchTab(id, el) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('tab-' + id).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            if(id === 'game') initGame();
+        }
+
+        // --- READ TAB LOGIC ---
+        let currCard = 0;
+        let showVi = false;
+
+        function renderCard() {
+            const data = animalData[currCard];
+            document.getElementById('page-indicator').innerText = `Animal ${currCard + 1} / ${animalData.length}`;
+            document.getElementById('animal-icon').innerText = data.icon;
+            document.getElementById('action-word').innerText = data.action;
+            document.getElementById('en-text').innerText = data.en;
+            document.getElementById('vi-text').innerText = data.vi_sen;
+            
+            const badge = document.getElementById('fact-badge');
+            if(data.fact) {
+                badge.style.display = 'block';
+                badge.innerText = `💡 ${data.fact}`;
+            } else {
+                badge.style.display = 'none';
+            }
+            updateViVisibility();
+        }
+
+        function toggleVi() { showVi = !showVi; updateViVisibility(); }
+        function updateViVisibility() {
+            const viEl = document.getElementById('vi-text');
+            if(showVi) viEl.classList.add('show'); else viEl.classList.remove('show');
+        }
+
+        function nextCard() { currCard = (currCard + 1) % animalData.length; showVi = false; renderCard(); }
+        function prevCard() { currCard = (currCard - 1 + animalData.length) % animalData.length; showVi = false; renderCard(); }
+        function readText() { 
+            let txt = animalData[currCard].en + " " + animalData[currCard].fact;
+            speak(txt); 
+        }
+        function pokeAnimal() {
+            const icon = document.getElementById('animal-icon');
+            icon.style.transform = 'scale(0.8) translateY(15px)';
+            setTimeout(() => icon.style.transform = 'scale(1) translateY(0)', 200);
+            speak(animalData[currCard].w + " " + animalData[currCard].action);
+        }
+
+        // --- VOCAB TAB LOGIC ---
+        const vocabContainer = document.getElementById('vocab-container');
+        animalData.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'flip-card';
+            div.innerHTML = `
+                <div class="flip-card-inner">
+                    <div class="flip-front">
+                        <div style="font-size: 3.5rem; margin-bottom: 5px;">${item.icon}</div>
+                        <h3 style="color: var(--text-main); font-size: 1.1rem; font-weight: 900;">${item.w}</h3>
+                        <div style="color: var(--accent); font-weight: 800; font-size: 0.95rem; margin-top:5px;">(${item.action})</div>
+                        <button class="btn btn-outline" style="position: absolute; top: 8px; right: 8px; padding: 4px; border-radius: 8px; min-width: 32px; border-width: 2px;" onclick="event.stopPropagation(); speak('${item.w}')">🔊</button>
+                    </div>
+                    <div class="flip-back">
+                        <h3 style="font-size: 1.3rem; margin-bottom:5px;">${item.vi}</h3>
+                    </div>
+                </div>`;
+            div.onclick = () => div.classList.toggle('flipped');
+            vocabContainer.appendChild(div);
+        });
+
+        // --- GAME TAB LOGIC ---
+        let currQuiz = 0;
+        let shuffledQuiz = [];
+
+        function initGame() {
+            shuffledQuiz = [...quizQuestions].sort(() => Math.random() - 0.5);
+            currQuiz = 0;
+            document.getElementById('leaf-container').style.display = 'none';
+            loadQuiz();
+        }
+
+        function loadQuiz() {
+            if(currQuiz >= shuffledQuiz.length) {
+                document.getElementById('quiz-question').innerText = "🏆 Safari Master! 🏆";
+                document.getElementById('quiz-options').innerHTML = '';
+                triggerLeaves();
+                speak("Great job! You are a Safari Master!");
+                return;
+            }
+
+            const q = shuffledQuiz[currQuiz];
+            document.getElementById('quiz-question').innerText = q.q;
+            speak(q.q);
+
+            const optionsGrid = document.getElementById('quiz-options');
+            optionsGrid.innerHTML = '';
+            
+            let opts = animalData.map(v => v.id);
+            opts = opts.sort(() => Math.random() - 0.5).slice(0, 4);
+            if(!opts.includes(q.ans)) opts[0] = q.ans; 
+            opts.sort(() => Math.random() - 0.5); 
+
+            opts.forEach(optId => {
+                const vData = animalData.find(v => v.id === optId);
+                const btn = document.createElement('div');
+                btn.className = 'option-btn';
+                btn.innerHTML = `${vData.icon}<span>${vData.action}</span>`;
+                btn.onclick = () => checkAnswer(btn, optId, q.ans);
+                optionsGrid.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(btn, selected, correct) {
+            if(selected === correct) {
+                btn.classList.add('correct');
+                speak("Correct!");
+                setTimeout(() => { currQuiz++; loadQuiz(); }, 1200);
+            } else {
+                btn.classList.add('wrong');
+                speak("Try again!");
+                setTimeout(() => btn.classList.remove('wrong'), 500);
+            }
+        }
+
+        function triggerLeaves() {
+            const container = document.getElementById('leaf-container');
+            container.innerHTML = '';
+            container.style.display = 'block';
+            const leaves = ['🌿', '🍃', '🌴', '🌻', '🐾'];
+            for(let i=0; i<30; i++) {
+                const el = document.createElement('div');
+                el.className = 'leaf';
+                el.innerText = leaves[Math.floor(Math.random() * leaves.length)];
+                el.style.left = `${Math.random() * 100}vw`;
+                el.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                el.style.animationDelay = `${Math.random() * 1}s`;
+                container.appendChild(el);
+            }
+        }
+
+        renderCard();
+    </script>
+</body>
+</html>
