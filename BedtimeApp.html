@@ -8,14 +8,9 @@
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Comic+Neue:wght@700&display=swap');
 
         :root {
-            --primary: #312e81; 
-            --primary-light: #e0e7ff;
-            --primary-dark: #1e1b4b;
-            --secondary: #8b5cf6; 
-            --accent: #fde047; 
-            --bg-color: #0f172a; 
-            --text-main: #334155;
-            --card-bg: #ffffff;
+            --primary: #312e81; --primary-light: #e0e7ff; --primary-dark: #1e1b4b;
+            --secondary: #8b5cf6; --accent: #fde047; --bg-color: #0f172a; 
+            --text-main: #334155; --card-bg: #ffffff;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -28,14 +23,21 @@
         header {
             background: rgba(30, 27, 75, 0.85); backdrop-filter: blur(10px);
             color: white; padding: 15px; text-align: center; border-bottom: 4px solid var(--secondary);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 10;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 10; position: relative;
         }
-        header h1 { font-family: 'Comic Neue', cursive; font-size: 1.8rem; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); text-shadow: 0 0 10px rgba(253, 224, 71, 0.5);}
+        header h1 { font-family: 'Comic Neue', cursive; font-size: 1.6rem; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); }
 
-        main { flex: 1; overflow-y: auto; padding: 15px 15px 120px 15px; display: flex; flex-direction: column; align-items: center; z-index: 5; }
-        
+        /* Nút quay lại mục lục */
+        .btn-home {
+            position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+            background: rgba(255,255,255,0.15); color: white; text-decoration: none;
+            padding: 8px 12px; border-radius: 12px; font-weight: 800; font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; gap: 5px;
+        }
+
+        main { flex: 1; overflow-y: auto; padding: 15px 15px 130px 15px; display: flex; flex-direction: column; align-items: center; z-index: 5; }
         .section { display: none; width: 100%; max-width: 500px; animation: fadeUp 0.5s ease forwards; }
-        .section.active { display: block; }
+        .section.active { display: flex; flex-direction: column; align-items: center; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         .btn {
@@ -46,35 +48,23 @@
         .btn:active { transform: translateY(5px); box-shadow: none; }
         .btn-outline { background: white; color: var(--primary-dark); border: 3px solid #cbd5e1; box-shadow: 0 5px 0 #94a3b8; }
 
-        /* --- FLASHCARD --- */
         .flashcard {
-            background: var(--card-bg); border-radius: 20px; padding: 20px; text-align: center;
+            background: var(--card-bg); border-radius: 20px; padding: 25px; text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 6px solid var(--secondary);
-            position: relative; min-height: 550px; display: flex; flex-direction: column; align-items: center; color: var(--text-main);
+            position: relative; min-height: 560px; display: flex; flex-direction: column; align-items: center; color: var(--text-main);
         }
-        
-        .fact-badge {
-            background: #fffbeb; color: #854d0e; padding: 10px 15px; border-radius: 15px;
-            font-weight: 800; font-size: 0.95rem; border: 2px dashed #f59e0b; margin-bottom: 10px; font-style: italic; line-height: 1.3;
-        }
-
-        .animal-icon { font-size: 6rem; margin: 5px 0; cursor: pointer; transition: transform 0.3s ease; }
-        
-        /* Fixed: Removed uppercase transform for name badge to allow lowercase IPA */
         .name-badge-btn { 
             font-size: 1.1rem; color: white; background: var(--secondary); padding: 12px 25px; 
             border-radius: 25px; font-weight: 900; margin-bottom: 15px; 
             box-shadow: 0 4px 0 #5b21b6; cursor: pointer; border: none;
             display: inline-flex; align-items: center; gap: 10px;
         }
-
-        .en-text { font-size: 1.3rem; font-weight: 900; color: var(--primary-dark); line-height: 1.5; margin-bottom: 10px; text-align: left; width: 100%; }
-        .vi-text { font-size: 1.15rem; font-weight: 700; color: var(--secondary); margin-bottom: 20px; display: none; line-height: 1.4; border-top: 1px dashed #cbd5e1; padding-top: 10px; text-align: left; width: 100%; }
+        .en-text { font-size: 1.35rem; font-weight: 900; color: var(--primary-dark); line-height: 1.5; margin-bottom: 10px; text-align: left; width: 100%; }
+        .vi-text { font-size: 1.2rem; font-weight: 700; color: var(--secondary); margin-bottom: 20px; display: none; line-height: 1.4; border-top: 1px dashed #cbd5e1; padding-top: 10px; text-align: left; width: 100%; }
         .vi-text.show { display: block; }
 
-        /* --- VOCAB & GAME GRID --- */
         .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 15px; width: 100%; }
-        .flip-card { background-color: transparent; height: 210px; perspective: 1000px; cursor: pointer; }
+        .flip-card { background-color: transparent; height: 220px; perspective: 1000px; cursor: pointer; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
         .flip-front, .flip-back {
@@ -84,112 +74,61 @@
         }
         .flip-back { background: var(--secondary); color: white; transform: rotateY(180deg); }
 
-        /* --- BOTTOM NAV --- */
         nav {
             position: fixed; bottom: 0; width: 100%; background: var(--primary-dark); border-top: 4px solid var(--secondary);
-            display: flex; justify-content: space-around; padding: 10px 10px 30px 10px; z-index: 100;
+            display: flex; justify-content: space-around; padding: 10px 10px 35px 10px; z-index: 100;
             padding-bottom: calc(10px + env(safe-area-inset-bottom));
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 0.9rem; font-weight: 900; flex: 1; cursor: pointer; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 0.9rem; font-weight: 900; flex: 1; cursor: pointer; gap: 4px; }
         .nav-item.active { color: var(--accent); }
         .nav-icon { font-size: 1.5rem; padding: 5px 20px; border-radius: 12px; transition: 0.3s; }
-        .nav-item.active .nav-icon { background: rgba(253, 224, 71, 0.2); }
-
-        #stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
-        .star { position: absolute; color: var(--accent); animation: twinkle linear forwards; }
-        @keyframes twinkle { 0% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0; transform: scale(0.5); } }
+        .nav-item.active .nav-icon { background: rgba(253, 224, 71, 0.2); transform: translateY(-3px); }
     </style>
 </head>
 <body>
-
     <header>
+        <a href="index.html" class="btn-home">🏠 Mục lục</a>
         <h1>Bedtime 🌙</h1>
     </header>
-
-    <div id="stars-container"></div>
-
     <main>
         <div id="tab-read" class="section active">
             <div style="text-align: center; margin-bottom: 10px; font-weight: 900; color: var(--accent);" id="page-indicator">Animal 1 / 5</div>
             <div class="flashcard">
-                <div id="fact-badge" class="fact-badge">💡 Fact</div>
-                <div class="animal-icon" id="animal-icon" onclick="speakAnimalName()">🦢</div>
-                
-                <button id="name-badge" class="name-badge-btn" onclick="speakAnimalName()">
-                    SWANS /swɒnz/ 🔊
-                </button>
-
+                <div id="fact-badge" class="fact-badge" style="background: #fffbeb; color: #854d0e; padding: 10px 15px; border-radius: 15px; font-weight: 800; font-size: 0.95rem; border: 2px dashed #f59e0b; margin-bottom: 10px; font-style: italic; line-height: 1.3;">💡 Fact</div>
+                <div class="animal-icon" style="font-size: 6.5rem; margin: 10px 0;" id="animal-icon" onclick="speakAnimalName()">🦢</div>
+                <button id="name-badge" class="name-badge-btn" onclick="speakAnimalName()">SWANS /swɒnz/ 🔊</button>
                 <div class="en-text" id="en-text">English</div>
                 <div class="vi-text" id="vi-text">Vietnamese</div>
-                
                 <div style="margin-top: auto; display: flex; gap: 10px; width: 100%;">
-                    <button class="btn btn-outline" style="flex: 1; min-height: 50px;" onclick="toggleVi()">E/V 🌐</button>
-                    <button class="btn" style="flex: 2; min-height: 50px;" onclick="readText()">🔊 Listen All</button>
+                    <button class="btn btn-outline" style="flex: 1; min-height: 55px;" onclick="toggleVi()">E/V 🌐</button>
+                    <button class="btn" style="flex: 2; min-height: 55px;" onclick="readText()">🔊 Listen All</button>
                 </div>
             </div>
-            <div style="display: flex; justify-content: space-between; margin-top: 20px; padding-bottom: 30px; width: 100%; gap: 15px;">
+            <div style="display: flex; justify-content: space-between; margin-top: 20px; padding-bottom: 35px; width: 100%; gap: 15px;">
                 <button class="btn btn-outline" style="flex: 1; min-height: 60px; background: rgba(255,255,255,0.1); color: white;" onclick="prevCard()">⬅️ Back</button>
                 <button class="btn btn-outline" style="flex: 1; min-height: 60px; background: rgba(255,255,255,0.1); color: white;" onclick="nextCard()">Next ➡️</button>
             </div>
         </div>
-
-        <div id="tab-vocab" class="section">
-            <div class="vocab-grid" id="vocab-container"></div>
-        </div>
-
+        <div id="tab-vocab" class="section"><div class="vocab-grid" id="vocab-container"></div></div>
         <div id="tab-game" class="section">
-            <div id="quiz-question" style="background: var(--primary-dark); padding: 20px; border-radius: 15px; border: 3px solid var(--secondary); text-align: center; font-size: 1.2rem; font-weight: 900; margin-bottom: 20px; color: white;">Which animal sleeps here?</div>
-            <div class="vocab-grid" id="quiz-options"></div>
+            <div id="quiz-question" style="background: var(--primary-dark); padding: 20px; border-radius: 15px; border: 3px solid var(--secondary); text-align: center; font-size: 1.25rem; font-weight: 900; margin-bottom: 20px; color: white;">Which animal sleeps here?</div>
+            <div class="vocab-grid" id="quiz-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;"></div>
             <button class="btn" style="width: 100%; margin-top: 25px; background: var(--accent); color: var(--primary-dark);" onclick="initGame()">Restart Game 🔄</button>
         </div>
     </main>
-
     <nav>
-        <div class="nav-item active" onclick="switchTab('read', this)">
-            <div class="nav-icon">📖</div><span>Read</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('vocab', this)">
-            <div class="nav-icon">💤</div><span>Vocab</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('game', this)">
-            <div class="nav-icon">🎮</div><span>Game</span>
-        </div>
+        <div class="nav-item active" onclick="switchTab('read', this)"><div class="nav-icon">📖</div><span>Read</span></div>
+        <div class="nav-item" onclick="switchTab('vocab', this)"><div class="nav-icon">💤</div><span>Vocab</span></div>
+        <div class="nav-item" onclick="switchTab('game', this)"><div class="nav-icon">🎮</div><span>Game</span></div>
     </nav>
-
     <script>
         const bedtimeData = [
-            { 
-                id: "swan", w: "SWANS", ipa: "/swɒnz/", vi: "Thiên nga", icon: "🦢", 
-                en: "Baby swans swim with Mom and Dad. They look for bugs to eat. The tired baby swans climb onto Mom's back. They fall asleep under her soft wings. Good night, baby swans.", 
-                vi_sen: "Thiên nga con bơi cùng bố và mẹ. Chúng đi tìm bọ để ăn. Khi đã mệt, thiên nga con leo lên lưng mẹ. Chúng ngủ thiếp đi dưới đôi cánh mềm mại của mẹ. Chúc ngủ ngon nhé, thiên nga nhỏ.", 
-                fact: "A baby swan stays safe and warm on its parent's back." 
-            },
-            { 
-                id: "orangutan", w: "ORANGUTANS", ipa: "/ɔːˈræŋ.uːtænz/", vi: "Đười ươi", icon: "🦧", 
-                en: "A baby orangutan hangs from a branch. It watches its mother make a nest. Baby and Mom snuggle in their cozy bed. Sleep tight, orangutans.", 
-                vi_sen: "Đười ươi con đu mình trên cành cây. Nó quan sát mẹ đang làm tổ. Hai mẹ con rúc vào nhau trên chiếc giường ấm cúng. Ngủ ngon nhé, các chú đười ươi.", 
-                fact: "Orangutans build a new nest every night." 
-            },
-            { 
-                id: "sealion", w: "SEA LIONS", ipa: "/ˈsiː ˌlaɪ.ənz/", vi: "Sư tử biển", icon: "🦭", 
-                en: "Baby sea lions play together on the beach. The sea lions curl up in the soft sand. Sweet dreams, sea lions.", 
-                vi_sen: "Sư tử biển con chơi đùa trên bãi biển. Những chú sư tử biển cuộn tròn trên bãi cát mềm mại. Những giấc mơ ngọt ngào nhé, sư tử biển ơi.", 
-                fact: "A baby sea lion can swim as soon as it is born." 
-            },
-            { 
-                id: "polarbear", w: "POLAR BEARS", ipa: "/ˈpəʊ.lə beərz/", vi: "Gấu Bắc Cực", icon: "🐻‍❄️", 
-                en: "Two baby polar bears follow their mom. The bears cuddle on a bed of snow. One baby is not ready to close its eyes. Go to bed, you sleepyhead.", 
-                vi_sen: "Hai chú gấu bắc cực con theo mẹ. Những chú gấu âu yếm nhau trên chiếc giường tuyết. Một chú gấu con chưa muốn nhắm mắt đâu. Đi ngủ thôi nào, đồ ngái ngủ ơi.", 
-                fact: "Thick fur and lots of fat keep polar bears warm." 
-            },
-            { 
-                id: "lion", w: "LIONS", ipa: "/ˈlaɪ.ənz/", vi: "Sư tử", icon: "🦁", 
-                en: "Mother lion gives her baby a bath before bedtime. A father lion takes care of the babies, too. Stretch. Yawn. Rest your head and go to sleep, baby lion.", 
-                vi_sen: "Sư tử mẹ tắm cho con trước giờ đi ngủ. Sư tử bố cũng chăm sóc các con. Vươn vai. Ngáp. Hãy gối đầu và đi ngủ thôi, sư tử con ơi.", 
-                fact: "A father lion takes care of the babies, too." 
-            }
+            { id: "swan", w: "SWANS", ipa: "/swɒnz/", vi: "Thiên nga", icon: "🦢", en: "Baby swans swim with Mom and Dad. They look for bugs to eat. The tired baby swans climb onto Mom's back. They fall asleep under her soft wings. Good night, baby swans.", vi_sen: "Thiên nga con bơi cùng bố và mẹ. Chúng đi tìm bọ để ăn. Khi đã mệt, thiên nga con leo lên lưng mẹ. Chúng ngủ thiếp đi dưới đôi cánh mềm mại của mẹ. Chúc ngủ ngon nhé, thiên nga nhỏ.", fact: "A baby swan stays safe and warm on its parent's back." },
+            { id: "orangutan", w: "ORANGUTANS", ipa: "/ɔːˈræŋ.uːtænz/", vi: "Đười ươi", icon: "🦧", en: "A baby orangutan hangs from a branch. It watches its mother make a nest. Baby and Mom snuggle in their cozy bed. Sleep tight, orangutans.", vi_sen: "Đười ươi con đu mình trên cành cây. Nó quan sát mẹ đang làm tổ. Hai mẹ con rúc vào nhau trên chiếc giường ấm cúng. Ngủ ngon nhé, các chú đười ươi.", fact: "Orangutans build a new nest every night." },
+            { id: "sealion", w: "SEA LIONS", ipa: "/ˈsiː ˌlaɪ.ənz/", vi: "Sư tử biển", icon: "🦭", en: "Baby sea lions play together on the beach. The sea lions curl up in the soft sand. Sweet dreams, sea lions.", vi_sen: "Sư tử biển con chơi đùa trên bãi biển. Những chú sư tử biển cuộn tròn trên bãi cát mềm mại. Những giấc mơ ngọt ngào nhé, sư tử biển ơi.", fact: "A baby sea lion can swim as soon as it is born." },
+            { id: "polarbear", w: "POLAR BEARS", ipa: "/ˈpəʊ.lə beərz/", vi: "Gấu Bắc Cực", icon: "🐻‍❄️", en: "Two baby polar bears follow their mom. The bears cuddle on a bed of snow. One baby is not ready to close its eyes. Go to bed, you sleepyhead.", vi_sen: "Hai chú gấu bắc cực con theo mẹ. Những chú gấu âu yếm nhau trên chiếc giường tuyết. Một chú gấu con chưa muốn nhắm mắt đâu. Đi ngủ thôi nào, đồ ngái ngủ ơi.", fact: "Thick fur and lots of fat keep polar bears warm." },
+            { id: "lion", w: "LIONS", ipa: "/ˈlaɪ.ənz/", vi: "Sư tử", icon: "🦁", en: "Mother lion gives her baby a bath before bedtime. A father lion takes care of the babies, too. Stretch. Yawn. Rest your head and go to sleep, baby lion.", vi_sen: "Sư tử mẹ tắm cho con trước giờ đi ngủ. Sư tử bố cũng chăm sóc các con. Vươn vai. Ngáp. Hãy gối đầu và đi ngủ thôi, sư tử con ơi.", fact: "A father lion takes care of the babies, too." }
         ];
-
         const quizQuestions = [
             { q: "Which animal builds a new nest every night? 🪹", ans: "orangutan" },
             { q: "Which animal curls up in the soft sand? 🏖️", ans: "sealion" },
@@ -197,125 +136,38 @@
             { q: "Which animal sleeps under mom's soft wings? 🪽", ans: "swan" },
             { q: "Which animal takes a bath before bedtime? 🛁", ans: "lion" }
         ];
-
-        function speak(text) {
-            window.speechSynthesis.cancel();
-            const u = new SpeechSynthesisUtterance(text);
-            u.lang = 'en-US'; u.rate = 0.8;
-            window.speechSynthesis.speak(u);
-        }
-
-        let currCard = 0;
-        let showVi = false;
-
+        function speak(text) { window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = 'en-US'; u.rate = 0.8; window.speechSynthesis.speak(u); }
+        let currCard = 0; let showVi = false;
         function renderCard() {
-            const data = bedtimeData[currCard];
-            document.getElementById('page-indicator').innerText = `Animal ${currCard + 1} / ${bedtimeData.length}`;
-            document.getElementById('animal-icon').innerText = data.icon;
-            document.getElementById('name-badge').innerHTML = `${data.w} ${data.ipa} 🔊`;
-            document.getElementById('en-text').innerText = data.en;
-            document.getElementById('vi-text').innerText = data.vi_sen;
-            document.getElementById('fact-badge').innerText = `💡 ${data.fact}`;
-            updateViVisibility();
+            const data = bedtimeData[currCard]; document.getElementById('page-indicator').innerText = `Animal ${currCard + 1} / ${bedtimeData.length}`;
+            document.getElementById('animal-icon').innerText = data.icon; document.getElementById('name-badge').innerHTML = `${data.w} ${data.ipa} 🔊`;
+            document.getElementById('en-text').innerText = data.en; document.getElementById('vi-text').innerText = data.vi_sen;
+            document.getElementById('fact-badge').innerText = `💡 ${data.fact}`; document.getElementById('vi-text').classList.toggle('show', showVi);
         }
-
-        function toggleVi() { showVi = !showVi; updateViVisibility(); }
-        function updateViVisibility() {
-            const viEl = document.getElementById('vi-text');
-            viEl.classList.toggle('show', showVi);
-        }
-
+        function toggleVi() { showVi = !showVi; renderCard(); }
         function nextCard() { currCard = (currCard + 1) % bedtimeData.length; showVi = false; renderCard(); }
         function prevCard() { currCard = (currCard - 1 + bedtimeData.length) % bedtimeData.length; showVi = false; renderCard(); }
-        
         function readText() { speak(bedtimeData[currCard].en + " " + bedtimeData[currCard].fact); }
         function speakAnimalName() { speak(bedtimeData[currCard].w); }
-
-        function switchTab(id, el) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById('tab-' + id).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            el.classList.add('active');
-            if(id === 'game') initGame();
-        }
-
+        function switchTab(id, el) { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); document.getElementById('tab-' + id).classList.add('active'); document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); el.classList.add('active'); if(id === 'game') initGame(); }
         const vocabContainer = document.getElementById('vocab-container');
         bedtimeData.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'flip-card';
-            div.innerHTML = `
-                <div class="flip-card-inner">
-                    <div class="flip-front">
-                        <div style="font-size: 3.5rem; margin-bottom: 5px;">${item.icon}</div>
-                        <h3 style="font-weight: 900; font-size: 1.1rem;">${item.w}</h3>
-                        <div style="color: #64748b; font-size: 0.85rem;">${item.ipa}</div>
-                        <button style="position: absolute; top: 10px; right: 10px; border: none; background: none; font-size: 1.3rem;" onclick="event.stopPropagation(); speak('${item.w}')">🔊</button>
-                    </div>
-                    <div class="flip-back">
-                        <h3 style="font-size: 1.3rem;">${item.vi}</h3>
-                    </div>
-                </div>`;
-            div.onclick = () => div.classList.toggle('flipped');
-            vocabContainer.appendChild(div);
+            const div = document.createElement('div'); div.className = 'flip-card';
+            div.innerHTML = `<div class="flip-card-inner"><div class="flip-front"><div style="font-size: 3.5rem;">${item.icon}</div><h3 style="font-weight: 900;">${item.w}</h3><div style="color: #64748b;">${item.ipa}</div><button style="position: absolute; top: 10px; right: 10px; border: none; background: none; font-size: 1.3rem;" onclick="event.stopPropagation(); speak('${item.w}')">🔊</button></div><div class="flip-back"><h3>${item.vi}</h3></div></div>`;
+            div.onclick = () => div.classList.toggle('flipped'); vocabContainer.appendChild(div);
         });
-
-        let currQuiz = 0;
-        let shuffledQuiz = [];
-
-        function initGame() {
-            shuffledQuiz = [...quizQuestions].sort(() => Math.random() - 0.5);
-            currQuiz = 0;
-            loadQuiz();
-        }
-
+        let currQuiz = 0; let shuffledQuiz = [];
+        function initGame() { shuffledQuiz = [...quizQuestions].sort(() => Math.random() - 0.5); currQuiz = 0; loadQuiz(); }
         function loadQuiz() {
-            if(currQuiz >= shuffledQuiz.length) {
-                document.getElementById('quiz-question').innerText = "🏆 Sweet Dreams Expert! 🏆";
-                document.getElementById('quiz-options').innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--accent); font-size: 1.5rem; font-weight: 900;">You finished the game!</div>';
-                triggerStars();
-                return;
-            }
-            const q = shuffledQuiz[currQuiz];
-            document.getElementById('quiz-question').innerText = q.q;
-            speak(q.q);
-            const optionsGrid = document.getElementById('quiz-options');
-            optionsGrid.innerHTML = '';
-            
+            const quizContainer = document.getElementById('quiz-options'); if(currQuiz >= shuffledQuiz.length) { document.getElementById('quiz-question').innerText = "🏆 Sweet Dreams Expert! 🏆"; quizContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--accent); font-size: 1.5rem; font-weight: 900;">You finished the game!</div>'; return; }
+            const q = shuffledQuiz[currQuiz]; document.getElementById('quiz-question').innerText = q.q; speak(q.q); quizContainer.innerHTML = '';
             bedtimeData.forEach(animal => {
-                const btn = document.createElement('div');
-                btn.className = 'flip-front';
-                btn.style = "position:relative; height:100px; cursor:pointer; border:3px solid var(--secondary); border-radius:15px; box-shadow: 0 4px 0 #5b21b6;";
-                btn.innerHTML = `<div style="font-size:2rem;">${animal.icon}</div><span style="font-weight:800; font-size:0.9rem;">${animal.w}</span>`;
-                btn.onclick = () => {
-                    if(animal.id === q.ans) {
-                        btn.style.background = "#dcfce7";
-                        speak("Correct!");
-                        setTimeout(() => { currQuiz++; loadQuiz(); }, 1200);
-                    } else {
-                        btn.style.background = "#fee2e2";
-                        speak("Try again!");
-                        setTimeout(() => btn.style.background = "white", 500);
-                    }
-                };
-                optionsGrid.appendChild(btn);
+                const btn = document.createElement('div'); btn.style = "background: white; border: 3px solid var(--secondary); border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 4px 0 #5b21b6; cursor: pointer; color: var(--text-main);";
+                btn.innerHTML = `<div style="font-size:2.5rem;">${animal.icon}</div><span style="font-weight:800;">${animal.w}</span>`;
+                btn.onclick = () => { if(animal.id === q.ans) { btn.style.background = "#dcfce7"; btn.style.borderColor = "#22c55e"; speak("Correct!"); setTimeout(() => { currQuiz++; loadQuiz(); }, 1200); } else { btn.style.background = "#fee2e2"; btn.style.borderColor = "#ef4444"; speak("Try again!"); setTimeout(() => { btn.style.background = "white"; btn.style.borderColor = "var(--secondary)"; }, 500); } };
+                quizContainer.appendChild(btn);
             });
         }
-
-        function triggerStars() {
-            const container = document.getElementById('stars-container');
-            container.innerHTML = '';
-            for(let i=0; i<30; i++) {
-                const el = document.createElement('div');
-                el.className = 'star';
-                el.innerText = '✨';
-                el.style.left = `${Math.random() * 100}vw`;
-                el.style.top = `${Math.random() * 100}vh`;
-                el.style.fontSize = `${Math.random() * 1.5 + 1}rem`;
-                el.style.animationDuration = `${Math.random() * 2 + 1}s`;
-                container.appendChild(el);
-            }
-        }
-
         renderCard();
     </script>
 </body>
